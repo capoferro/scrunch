@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+require 'thor'
+
+class Scrunch < Thor
+  desc "crunch -f FILENAME", "crunch a log file"
+  method_options %w(file -f) => :string, required: true
+  def crunch
+    puts "the file #{options[:file]}"
+  end
+
+  default_task :crunch
+end
+
+Scrunch.start
