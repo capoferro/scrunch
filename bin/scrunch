@@ -5,6 +5,7 @@ class Scrunch < Thor
   desc "crunch -f FILENAME", "crunch a log file"
   method_options %w(file -f) => :string, required: true
   def crunch
+    puts 'Use -f to pass a file, eg: scrunch -f path/to/combatlog.txt' and return if options[:file].nil?
     puts "the file #{options[:file]}"
   end
 

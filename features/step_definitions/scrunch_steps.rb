@@ -19,3 +19,11 @@ Then /^I should see a list of damage sources with the amount of damage done$/ do
   pp @output
   pending
 end
+
+Then /^I should see help output$/ do
+  @output.should =~ /Use -f to pass a file, eg: scrunch -f path\/to\/combatlog.txt/
+end
+
+When /^I call scrunch without a file$/ do
+  @output = `#{root}bin/scrunch`
+end
