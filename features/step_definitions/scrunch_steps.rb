@@ -42,3 +42,7 @@ end
 Then /^I should see an error message stating that the file does not exist$/ do
   @output.should =~ /doesntexist.txt doesn\'t exist!/
 end
+
+Given /^I intend to give the "([^\"]*)" combat log at the prompt$/ do |filename|
+  IO.stub(:gets).and_return "#{root}spec/logs/#{filename}.txt"
+end

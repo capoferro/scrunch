@@ -6,6 +6,7 @@ $:.push File.join(File.dirname(__FILE__), '..', '..', 'lib')
 
 require 'rspec'
 require 'scrunch'
+require 'cucumber/rspec/doubles'
 
 class ScrunchWorld
   include RSpec::Expectations
