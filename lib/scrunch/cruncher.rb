@@ -28,6 +28,20 @@ module Scrunch
       @sources[source] ||= 0
       parsed_result = parse_result result
       @sources[source] += parsed_result[:effect][:damage][:amount] if parsed_result[:effect].keys.include? :damage
+    rescue ArgumentError => e
+      if e.message =~ /invalid byte sequence/i
+        properly_encoded_line = line.chars.collect do |i|
+          if i.valid_encoding?
+            i
+          else
+            '?'
+          end
+        end.join
+
+        parse properly_encoded_line
+      else 
+        raise e
+      end
     end
 
     # Public: Parses the result of the effect, the final chunk of the log entry
