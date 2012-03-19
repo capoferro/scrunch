@@ -25,3 +25,11 @@ end
 When /^I call scrunch without a file$/ do
   @output = `#{root}bin/scrunch`
 end
+
+When /^I pass a filename that doesn\'t exist as an argument on the command line$/ do
+  @output = `#{root}bin/scrunch -f doesntexist.txt`
+end
+
+Then /^I should see an error message stating that the file does not exist$/ do
+  @output.should =~ /doesntexist.txt doesn\'t exist!/
+end

@@ -23,6 +23,8 @@ class ScrunchCommand < Thor
       x
     end
     puts Terminal::Table.new(rows: rows)
+  rescue Errno::ENOENT => e
+    puts "#{options[:file]} doesn't exist!"
   end
 
   default_task :crunch
