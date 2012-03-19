@@ -5,7 +5,7 @@ $:.push File.join(File.dirname(__FILE__), '..', '..')
 $:.push File.join(File.dirname(__FILE__), '..', '..', 'lib')
 
 require 'rspec'
-require 'swtor_log_cruncher'
+require 'scrunch'
 
 class ScrunchWorld
   include RSpec::Expectations

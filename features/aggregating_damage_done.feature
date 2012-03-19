@@ -7,8 +7,9 @@ Scenario: Failing to give a combat log for parsing
   When I call scrunch without a file
   Then I should see help output
 
-@wip
 Scenario: Giving a combat log for parsing
-  Given I am using the first test data file
+  Given I am using the second test data file
   When I pass the test data filename as an argument on the command line
   Then I should see a list of damage sources with the amount of damage done
+
+
