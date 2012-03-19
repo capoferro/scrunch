@@ -3,31 +3,52 @@ require 'thor'
 $:.push File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib')
 require 'scrunch'
 
-class ScrunchCommand < Thor
-  desc "crunch -f FILENAME", "crunch a log file"
-  method_options %w(file -f) => :string, required: true
-  def crunch
-    if options[:file].nil? #TODO use stderr
-      puts 'Use -f to pass a file, eg: scrunch -f path/to/combatlog.txt'
-      return
+module Scrunch
+  class Command < Thor
+    desc "crunch -f FILENAME", "crunch a log file"
+    method_options %w(file -f) => :string, required: true
+    def crunch
+      if options[:file].nil? #TODO use stderr
+        puts 'Use -f to pass a file, eg: scrunch -f path/to/combatlog.txt'
+        return
+      end
+
+      sources = Cruncher.crunch options[:file]
+
+      # Thor acts as the controller/view layer for the CLI
+      damage_total = sources.damage_total
+      damage_rows = sources.values.sort_by(&:damage_total).reverse.collect do |source| 
+        bar = if damage_total < 1
+                ''
+              else
+                '|'*(source.damage_total.to_f/damage_total * 50).to_i
+              end
+        [source.name,
+         {value: source.damage_total, alignment: :right},
+         bar]
+      end
+
+      puts Terminal::Table.new(rows: damage_rows, title: 'Damage')
+
+      healing_total = sources.healing_total
+      healing_rows = sources.values.sort_by(&:healing_total).reverse.collect do |source| 
+        bar = if healing_total < 1
+                ''
+              else
+                '|'*(source.healing_total.to_f/healing_total * 50).to_i
+              end
+        [source.name,
+         {value: source.healing_total, alignment: :right},
+         bar]
+      end
+
+      puts Terminal::Table.new(rows: healing_rows, title: 'Healing')
+    rescue Errno::ENOENT => e
+      puts "#{options[:file]} doesn't exist!"
     end
 
-    cruncher = Scrunch::Cruncher.new options[:file]
-    cruncher.crunch
-
-    # Thor acts as the controller/view layer for the CLI
-    total = cruncher.sources.total
-    rows = cruncher.ordered_sources.collect do |x| 
-      x[1] = {value: x[1], alignment: :right}
-      x << '|'*(x[1][:value].to_f/total * 50).to_i
-      x
-    end
-    puts Terminal::Table.new(rows: rows)
-  rescue Errno::ENOENT => e
-    puts "#{options[:file]} doesn't exist!"
+    default_task :crunch
   end
-
-  default_task :crunch
 end
 
-ScrunchCommand.start
+Scrunch::Command.start

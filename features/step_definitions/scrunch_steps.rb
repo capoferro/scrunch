@@ -8,13 +8,22 @@ When /^I pass the test data filename as an argument on the command line$/ do
   @output = `#{root}bin/scrunch -f #{@data_file_path}`
 end
 
-Then /^I should see a list of damage sources with the amount of damage done$/ do
+Then /^I should see a list of damage and healing sources with the amount of damage and healing done$/ do
   @output.should == <<OUTPUT
++----------------+------+--+
+|          Damage          |
 +----------------+------+--+
 | Forge Guardian | 3122 | |||||||||||||||||||||| |
 | @Ahri          | 2825 | |||||||||||||||||||| |
 | @Ahri:T7-O1    |  859 | |||||| |
 +----------------+------+--+
++----------------+-----+---+
+|         Healing          |
++----------------+-----+---+
+| @Ahri          | 815 | ||||||||||||||||||||||||||||||||||||||||||||||||||  |
+| @Ahri:T7-O1    |   0 |   |
+| Forge Guardian |   0 |   |
++----------------+-----+---+
 OUTPUT
 end
 
