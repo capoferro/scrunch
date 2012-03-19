@@ -17,9 +17,11 @@ end
 
 Then /^I should see a list of damage sources with the amount of damage done$/ do
   @output.should == <<OUTPUT
-Forge Guardian: 3122
-@Ahri: 2825
-@Ahri:T7-O1: 859
++----------------+------+
+| Forge Guardian | 3122 |
+| @Ahri          | 2825 |
+| @Ahri:T7-O1    |  859 |
++----------------+------+
 OUTPUT
 end
 

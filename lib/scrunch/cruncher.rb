@@ -1,3 +1,5 @@
+require 'terminal-table'
+
 module Scrunch
   class Cruncher
     attr_reader :sources
@@ -5,11 +7,6 @@ module Scrunch
     def initialize(filename)
       @filename = filename
       @sources = {}
-    end
-
-    def run
-      crunch
-      put_sources_table
     end
 
     # Public: Primary processing loop. Reads in the file, building data structures for analysis and display
@@ -43,14 +40,11 @@ module Scrunch
       {effect: {effect => {amount: amount.to_i, type: type}}}
     end
 
-    # Public: Prints out the damage done by all sources in table format, sorted by most damage done
+    # Public: converts the sources Hash to an ordered array of tuples, highest damage first
     #
-    # Returns nil
-    def put_sources_table
-      @sources.to_a.sort_by { |x| x[1] }.reverse.each do |tuple|
-        puts "#{tuple[0]}: #{tuple[1]}"
-      end
+    # Returns Array of converted Hash elements
+    def ordered_sources
+      @sources.to_a.sort_by { |x| x[1] }.reverse
     end
-    
   end
 end

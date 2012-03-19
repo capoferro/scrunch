@@ -5,3 +5,4 @@ group :test, :development do
 end
 
 gem 'thor'
+gem 'terminal-table'
