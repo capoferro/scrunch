@@ -11,12 +11,12 @@ class ScrunchCommand < Thor
       puts 'Use -f to pass a file, eg: scrunch -f path/to/combatlog.txt'
       return
     end
-    puts 'Use -f to pass a file, eg: scrunch -f path/to/combatlog.txt' and return if options[:file].nil? #TODO use stderr
+
     cruncher = Scrunch::Cruncher.new options[:file]
     cruncher.crunch
 
     # Thor acts as the controller/view layer for the CLI
-    rows = cruncher.ordered_source_tuples.collect { |x| x[1] = {value: x[1], alignment: :right}; x }
+    rows = cruncher.ordered_sources.collect { |x| x[1] = {value: x[1], alignment: :right}; x }
     puts Terminal::Table.new(rows: rows)
   end
 
