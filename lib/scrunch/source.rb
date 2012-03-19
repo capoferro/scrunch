@@ -3,7 +3,7 @@ module Scrunch
     attr_reader :name, :damage_total, :healing_total
 
     def initialize(name)
-      @name = name
+      @name = (name.nil? || name.empty? ? '*unknown*' : name)
       @damage_total = 0
       @healing_total = 0
     end
