@@ -8,12 +8,13 @@ module Scrunch
       it 'should crunch logs and return a hash of damage sources with their damage output' do
         subject.crunch.should == {"@Ahri"=>2825, "@Ahri:T7-O1"=>859, "Forge Guardian"=>3122}
       end
+
+      it 'should not explode when reading a file with an invalid byte sequence' do
+        c = described_class.new File.join logs_path, 'Ahri-PvP.txt'
+        -> { c.crunch }.should_not raise_error
+      end
     end
     describe '#process' do
-      it 'should not explode from invalid byte sequences' do
-        -> { subject.parse "[03/18/2012 23:01:33] [@Pa\303xECn] [@Ahri] [Punch {2917481089859584}] [ApplyEffect {836045448945477}: Damage {836045448945501}] (218 kinetic {836045448940873}) <218>"}.should_not raise_error
-      end
-
       describe 'a damage line' do
         before do
           @damage_line = '[03/18/2012 03:59:24] [@Ahri] [Forge Guardian {795067165966336}] [Force Leap {812105301229568}] [ApplyEffect {836045448945477}: Damage {836045448945501}] (73 energy {836045448940874}) <73>'
@@ -23,14 +24,13 @@ module Scrunch
           it 'should take a line and update the appropriate source with damage done' do
             subject.parse @damage_line
             subject.sources['@Ahri'].should == 73
-            endn
           end
-          
-          describe 'if the source exists prior to the line being processed' do
-            it 'should increment damage done' do
-              2.times { subject.parse @damage_line }
-              subject.sources['@Ahri'].should == 146
-            end
+        end
+        
+        describe 'if the source exists prior to the line being processed' do
+          it 'should increment damage done' do
+            2.times { subject.parse @damage_line }
+            subject.sources['@Ahri'].should == 146
           end
         end
       end

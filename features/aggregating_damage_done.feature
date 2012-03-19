@@ -12,4 +12,3 @@ Scenario: Giving a combat log for parsing
   When I pass the test data filename as an argument on the command line
   Then I should see a list of damage sources with the amount of damage done
 
-

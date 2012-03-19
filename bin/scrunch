@@ -16,7 +16,12 @@ class ScrunchCommand < Thor
     cruncher.crunch
 
     # Thor acts as the controller/view layer for the CLI
-    rows = cruncher.ordered_sources.collect { |x| x[1] = {value: x[1], alignment: :right}; x }
+    total = cruncher.sources.total
+    rows = cruncher.ordered_sources.collect do |x| 
+      x[1] = {value: x[1], alignment: :right}
+      x << '|'*(x[1][:value].to_f/total * 50).to_i
+      x
+    end
     puts Terminal::Table.new(rows: rows)
   end
 

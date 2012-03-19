@@ -6,7 +6,7 @@ module Scrunch
 
     def initialize(filename)
       @filename = filename
-      @sources = {}
+      @sources = Sources.new
     end
 
     # Public: Primary processing loop. Reads in the file, building data structures for analysis and display
