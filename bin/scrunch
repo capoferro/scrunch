@@ -10,7 +10,7 @@ module Scrunch
     def crunch
       filename = if options[:file].nil? #TODO use stderr
                    puts "combat log file:\n(eg. C:\\path\\to\\combat_2012-03-18_02_32_16_597593.txt)"
-                   gets.chomp
+                   gets.chomp.gsub /\"/, ''
                  else
                    options[:file]
                  end
@@ -45,6 +45,9 @@ module Scrunch
       end
 
       puts Terminal::Table.new(rows: healing_rows, title: 'Healing')
+      
+      puts "Press Enter to exit."
+      gets
     rescue Errno::ENOENT => e
       puts "#{filename} doesn't exist!"
     end
